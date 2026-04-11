@@ -9,10 +9,10 @@ if not os.path.exists(datasets_folder):
     os.makedirs(datasets_folder)
 
 root_url = "https://valvrareteam.net/"
-limit_batch_num = 10
+limit_batch_num = 1_000_000
 current_file_crawlpart = f"{datasets_folder}/crawlpart1.json"
 writer_metadata_path = f"{datasets_folder}/metadata.json"
-buffer_size = 11
+buffer_size = 128
 cooldown = 1
 # loop text là phần text thường xuất hiện nhiều nhất trong nội dung và tần suất crawl, buộc phải bỏ qua nếu muốn dữ liệu sạch.
 loop_text = "\nCopyright © 2025 Valvrareteam"
