@@ -5,6 +5,9 @@ import os
 import random
 import unicodedata
 import html
+# pip install fake-useragent
+from fake_useragent import UserAgent
+ua = UserAgent()
 scraper = cloudscraper.create_scraper()
 
 """
@@ -106,6 +109,7 @@ class UrlExtractorCrawler:
         
         try:
             urls_extracted = set()
+            self.headers['user-agent'] = ua.random
             response = scraper.get(url=url, headers=self.headers, timeout=10)
             website_content = response.text
             soup = BeautifulSoup(website_content, "html.parser")
@@ -127,7 +131,7 @@ class UrlExtractorCrawler:
             urls_extracted = list(urls_extracted)
             self.auto_write_metadata()
             random.shuffle(self.metadata["previous_url"])
-            self.metadata['previous_url'] = urls_extracted + self.metadata["previous_url"][:5]
+            self.metadata['previous_url'] = urls_extracted + self.metadata["previous_url"][:100]
             return urls_extracted, url, website_content
         except:
             return "ERROR"
@@ -137,5 +141,6 @@ if __name__ == "__main__":
     u = UrlExtractorCrawler("https://vnexpress.net/", metadata_write_delay=2)
     while True:
         pack = u.requests_and_extract_urls_incontent()
-        input(get_text(pack[1]))
+        print(pack[-1])
+        input(get_text(pack[-1]))
         os.system("cls")
